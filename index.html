@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport meta tag for mobile responsiveness -->
+    <link rel="stylesheet" type="text/css" href="styles.css"> <!-- Link to your primary CSS file -->
+    <link rel="stylesheet" type="text/css" href="mobile.css"> <!-- Link to the mobile CSS file -->
+</head>
+    <title>Computer Programming</title>
+    <style>
+        /* Styles (same as before) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .submit-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .submit-button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .result h2 {
+            font-size: 24px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .question {
+                font-size: 16px;
+            }
+            .answer-input,
+            .submit-button {
+                font-size: 14px;
+            }
+            .result {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Page</h1>
+
+    <div class="container">
+        <div id="question" class="question"></div>
+        <p id="question-text"></p>
+        <input type="text" id="answer-input" class="answer-input" placeholder="Your answer">
+        <br>
+        <button id="submit-button" class="submit-button" onclick="checkAnswer()">Submit Answer</button>
+        <button id="show-correct-button" class="submit-button" onclick="showCorrectAnswers()">Show Correct Answers</button>
+        <button id="review-previous-button" class="submit-button" onclick="reviewPrevious()">Review Previous</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script type="text/javascript">
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                if (i !== j) {
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+            }
+        }
+
+        const questions = [
+        "A set of written instructions that tells the computer what to do - Program",
+
+"The most basic circuitry-level language, considered a low-level programming language - Machine language",
+
+"Allows you to use a vocabulary of reasonable terms - High-level programming language",
+
+"Rules of language - Syntax",
+
+"Similar to English sentences and carry out tasks of the program - Program statements",
+
+"Translates language statements into machine code - Compiler or interpreter",
+
+"Misuse of language, often caused by misspelled programming language words - Syntax error",
+
+"The process of freeing a program of all errors - Debugging",
+
+"Also called semantic errors, involve incorrect order or procedure - Logic errors",
+"Sets of operations executed in sequence - Procedural programming",
+
+"Named computer memory locations that hold values - Variables",
+
+"Individual operations grouped into logical units - Procedures",
+
+"Create classes. Create objects from classes. Create applications - Object-oriented programs",
+
+"Allows you to treat files as objects. Not all object-oriented programs are written to use GUI - GUI System",
+
+"Made up of attributes and methods - Objects",
+
+"Characteristics that define object, differentiate objects of the same class, value of attributes is object's state - Attributes",
+
+"Describes objects with common properties, definition, instance - Class",
+
+"Self contained block of program code, similar to procedure - Method",
+
+"Refers to hiding of data and methods within object. Provides security. Keeps data and methods safe from inadvertent changes - Encapsulation",
+"Will appear in output exactly as entered. Written between double quotation marks - Literal string",
+
+"Pieces of information passed to a method - Arguments",
+
+"Requires information to perform its task - Method",
+
+"Reserved keyword. Means the method is accessible and usable even though no objects of class exist - static",
+
+"Nonexecuting statements added to a program for documentation. Use to leave notes for yourself or others. Include author, date, class's name, or function - Program comments",
+
+"Turn it into a comment. The compiler does not translate, and the JVM does not execute its command - Comment out a statement",
+
+"Start with forward slash and asterisk (/). End with asterisk and forward slash (/) - Block comments",
+
+"Special case of block comments. Begin with a slash and two asterisks (/**). End with an asterisk and forward slash (*/). Used to generate documentation - Javadoc comments",
+
+"Save class in a file with exactly the same name and .java extension. For public classes. Class name and filename must match exactly - Saving a Java class",
+
+"Compile source code into bytecode. Translate bytecode into executable statements (using Java interpreter). Type javac First.java - Compiling a Java class",
+
+"javac unrecognized command. Program language error messages. No messages indicating successful completion - Compilation outcomes",
+
+"Misspelled command javac. Misspelled filename. Not within the correct subfolder or subdirectory on the command line. Java not installed properly - Reasons for error messages",
+
+"Compiler detects a violation of language rules. Refuses to translate class to machine code - Compile-time error",
+
+"Process compiler uses to divide source code into meaningful portions - Parsing",
+
+"Syntax correct but produces incorrect results when executed. Usually more difficult to find and resolve - Logic error",
+
+"Also called the Java class library. Prewritten Java classes - Java API",
+
+"Set of instructions that tells a computer what to do - Computer program",
+
+"Classes, Objects, Applications - Object-oriented programs",
+
+"Standardized hypothetical computer - Java virtual machine (JVM)",
+"Word that defines circumstances under which a class can be accessed - Access modifier",
+
+"Compile command - javac",
+
+"Execute command - java",
+
+"GUI. Provides methods for creating dialogs - JOptionPane"
+
+    ]
+        shuffle(questions);
+
+        let score = 0;
+        let currentIndex = 0;
+        let reviewIndex = -1; // Initialize reviewIndex
+
+        function displayQuestion() {
+            if (currentIndex < questions.length) {
+                const questionData = questions[currentIndex].split(' - ');
+                const questionText = questionData[0];
+
+                document.getElementById('question').textContent = `Question ${currentIndex + 1}:`;
+                document.getElementById('question-text').textContent = questionText;
+                document.getElementById('answer-input').value = '';
+
+                currentIndex++;
+            } else {
+                showResult();
+            }
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById('answer-input').value;
+            const answerData = questions[currentIndex - 1].split(' - ');
+            const correctAnswer = answerData[1];
+
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `<h2>Question ${currentIndex}</h2>`;
+            
+            if (userInput.toLowerCase() === correctAnswer.toLowerCase()) {
+                resultContainer.innerHTML += `<p>Your answer (${userInput}) is <strong>correct</strong>.</p>`;
+                score++;
+            } else {
+                resultContainer.innerHTML += `<p>Your answer (${userInput}) is <strong>incorrect</strong>. The correct answer is: ${correctAnswer}</p>`;
+            }
+
+            displayQuestion();
+        }
+
+        function showCorrectAnswers() {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `<h2>Quiz completed</h2>`;
+
+            for (let i = 0; i < questions.length; i++) {
+                const questionData = questions[i].split(' - ');
+                const questionText = questionData[0];
+                const correctAnswer = questionData[1];
+
+                resultContainer.innerHTML += `
+                    <p>Question ${i + 1}: ${questionText}</p>
+                    <p>Your Answer: ${correctAnswer}</p>
+                    <p>Correct Answer: ${correctAnswer}</p>
+                    <p>Correct</p>
+                    <hr>
+                `;
+            }
+        }
+        function displayWrongAnswers() {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `<h2>Wrong Answers</h2>`;
+
+            for (let i = 0; i < wrongAnswers.length; i++) {
+                resultContainer.innerHTML += `
+                    <p>Question ${i + 1}: ${wrongAnswers[i].question}</p>
+                    <p>Your Answer: ${wrongAnswers[i].yourAnswer}</p>
+                    <p>Correct Answer: ${wrongAnswers[i].correctAnswer}</p>
+                    <p>Incorrect</p>
+                    <hr>
+                `;
+            }
+        }
+        function reviewPrevious() {
+            if (reviewIndex >= 0) {
+                currentIndex = reviewIndex; // Set currentIndex to the reviewIndex
+                reviewIndex--;
+                displayQuestion();
+
+            } else if (currentIndex > 1) {
+                // Allow reviewing the first question if currentIndex is greater than 1
+                currentIndex = 0;
+                reviewIndex = -1;
+                displayQuestion();
+            }
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
+
+       
